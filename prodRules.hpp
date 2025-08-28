@@ -1,0 +1,65 @@
+#pragma once
+#include "tokenTypes.hpp"
+#include <vector>
+
+class ProdRule {
+    public:
+    virtual bool checkIfValid() { return true; };
+    void updateTokens(std::vector<Token> tokens);
+
+    virtual ~ProdRule() = default;
+
+    protected:
+    std::vector<Token> tokens;
+};
+
+class Expression: ProdRule {
+    public:
+    Expression() {}
+    ~Expression() {}
+    Expression(std::vector<Token>& tokens);
+    bool checkIfValid() override;
+};
+
+class Statement: ProdRule {
+    public:
+    bool checkIfValid() override;
+    Statement() {}
+    ~Statement() {}
+    
+    void addChild(Expression expression);
+    Expression getChild();
+
+    private:
+    Expression expression;
+};
+
+class Function: ProdRule {
+    public:
+    bool checkIfValid() override;
+
+    Function() {}
+    ~Function() {}
+
+    void addChild(Statement statement);
+    std::vector<Statement> getChildren();
+    std::string getFuncID();
+
+    private:
+    std::string id;
+    std::vector<Statement> statements;
+};
+
+class Program: ProdRule {
+    public:
+    bool checkIfValid() override;
+
+    Program() {}
+    ~Program() {}
+    
+    void addChild(Function function);
+    std::vector<Function> getChildren();
+
+    private:
+    std::vector<Function> functions;
+};

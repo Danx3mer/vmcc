@@ -2,7 +2,7 @@
 #include "ParserManager.hpp"
 
 void parse() {
-	std::vector<Token, std::allocator<Token>> tokens = lex();
+	std::vector<Token> tokens = lex();
 
     Program prog;
     

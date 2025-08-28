@@ -1,0 +1,82 @@
+#include "prodRules.hpp"
+
+void ProdRule::updateTokens(std::vector<Token> tokens)
+{
+    this->tokens = tokens;
+}
+
+Expression::Expression(std::vector<Token>& tokens) 
+{
+    this->tokens = tokens;
+}
+
+bool Expression::checkIfValid()
+{
+    for (Token token : tokens)
+    {
+        if (token.type != DIGIT)
+            return false;
+    }
+    return true;
+}
+
+bool Statement::checkIfValid()
+{
+        if(tokens[0].content!="return") return false;
+        for(Token token: tokens) {
+            if(token.content==";") return true;
+            if(token.type!=DIGIT) return false;
+        }
+        
+        return true;
+}
+
+void Statement::addChild(Expression expression)
+{
+    this->expression = expression;
+}
+
+Expression Statement::getChild() { return this->expression; }
+
+bool Function::checkIfValid()
+{
+        for(Statement statement: statements) if(!statement.checkIfValid()) return false;
+
+        if(tokens[0].content!="int") return false;
+
+        short i;
+        std::string id;
+        for(i=1; i<tokens.size(); i++) {
+            if(tokens[i].content=="(") break;
+            else if(tokens[i].type==SYMBOL) return false;
+            else id+=tokens[i].content;
+        }
+
+        if(tokens[i+1].content!=")" && tokens[i+2].content != "{" && tokens[tokens.size()-1].content != "}") return false;
+
+        this->id = id;
+
+        return true;
+}
+
+void Function::addChild(Statement statement)
+{
+    this->statements.push_back(statement);
+}
+
+std::vector<Statement> Function::getChildren() { return this->statements; }
+
+std::string Function::getFuncID() { return this->id; }
+
+bool Program::checkIfValid() 
+{
+        for(Function foo: functions) if(!foo.checkIfValid()) return false;
+        return functions.size()>0;
+}
+
+void Program::addChild(Function function)
+{
+    this->functions.push_back(function);
+}
+
+std::vector<Function> Program::getChildren() { return this->functions; }
