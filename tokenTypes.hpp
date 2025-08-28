@@ -17,44 +17,44 @@ public:
     static TokenType getTokenType(char unLexedToken) {
         for (short i = 0; i < 26; i++)
             if (unLexedToken == ('a' + i) || unLexedToken == ('A' + i))
-                return CHARACTER;
+                return TokenType::CHARACTER;
 
         for (short i = 0; i < 10; i++)
             if (unLexedToken == ('0' + i))
-                return DIGIT;
+                return TokenType::DIGIT;
 
         switch (unLexedToken) {
         case '{':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         case '}':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         case '(':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         case ')':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         case ';':
-            return SEMICOLON;
+            return TokenType::SEMICOLON;
             break;
         case '*':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         case '.':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         case '=':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         case '/':
-            return SYMBOL;
+            return TokenType::SYMBOL;
             break;
         default:
-            return UNDEFINED;
+            return TokenType::UNDEFINED;
         }
     }
 
-    Token(TokenType type, std::string content) : type(type), content(content) {}
+    Token(TokenType type, std::string content): type(type), content(content) {}
 };

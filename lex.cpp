@@ -32,7 +32,7 @@ std::vector<Token> findtStrings(std::vector<char> tkns) {
     return vec;
 }
 
-constexpr std::vector<char> getBaseTokens() {
+std::vector<char> getBaseTokens() {
     std::vector<char> tokens = {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', // constants - digits
         '{', '}', '(', ')', ';', '*', '.', '=', '/'
@@ -46,7 +46,7 @@ constexpr std::vector<char> getBaseTokens() {
     return tokens;
 }
 
-std::vector<Token> lex() {
+std::vector<Token, std::allocator<Token>> lex() {
     std::ios_base::sync_with_stdio(false);
     
     const std::vector<char> tokens = getBaseTokens();

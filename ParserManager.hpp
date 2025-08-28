@@ -1,5 +1,3 @@
-#include <iostream>
-#include <vector>
 #include "ProdRules.hpp"
 
 class ParserManager {    
@@ -9,9 +7,20 @@ class ParserManager {
     };
 
     void exitScope() {
+        switch(scope) {
+            case FUNCTION: 
+            currentProgram.addChild(currentFunction);
+            break;
+            case STATEMENT:
+            currentFunction.addChild(currentStatement);
+            break;
+            case EXPRESSION:
+            currentStatement.addChild(Expression(*currentContent));
+            break;
+        }
+
         scope = ParsingScope(scope - -1);
         currentContent->assign({});
-        higherProdRule->addChild(*currentProdRule);        
         this->selectAppropriateContent();
     }
 
@@ -32,7 +41,15 @@ class ParserManager {
         currentContent->push_back(token);
     }
 
-    ParserManager() :content(4), prodRules(4) {}
+    ParserManager() :content(4) {}
+
+    void printParsedProgram() {
+        for(Function foo: currentProgram.getChildren()) {
+            std::cout << foo.getFuncID() << "\n";
+            for(Statement statement: foo.getChildren())
+                std::cout << "Statement" << "\n";
+        }
+    }
 
     private:
     ParsingScope scope;
@@ -40,9 +57,10 @@ class ParserManager {
     std::vector<Token>* currentContent;
     std::vector<std::vector<Token>> content;
 
-    std::vector<ProdRule> prodRules;
-    ProdRule* higherProdRule;
-    ProdRule* currentProdRule;
+    Program currentProgram;
+    Function currentFunction;
+    Statement currentStatement;
+    Expression currentExpression;
 
     void selectAppropriateContent() {
         short op;
@@ -60,10 +78,8 @@ class ParserManager {
         case EXPRESSION: 
             op=3;
         break;
-        }        
+        }
 
-        higherProdRule = &this->prodRules[(op-1>-1)?op-1:op];
-        currentProdRule = &this->prodRules[op];
         currentContent = &this->content[op];
     }
 };

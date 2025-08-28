@@ -1,12 +1,10 @@
-#include <iostream>
 #include "lex.cpp"
 #include "ParserManager.hpp"
-#include "ProdRules.hpp"
 
-int main() {
-	std::vector<Token> tokens = lex();
+void parse() {
+	std::vector<Token, std::allocator<Token>> tokens = lex();
 
-    Program prog(tokens);
+    Program prog;
     
     ParserManager pMnger;
 
@@ -33,4 +31,6 @@ int main() {
             break;
         }
     }
+
+    pMnger.printParsedProgram();
 }

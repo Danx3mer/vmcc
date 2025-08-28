@@ -1,18 +1,6 @@
 #include "tokenTypes.hpp"
-#include <iostream>
 #include <vector>
-
-class ProdRule {
-    public:
-    virtual bool checkIfValid() = 0;
-    virtual void addChild(ProdRule child) = 0;
-
-    protected:
-    ProdRule(std::vector<Token> tokens) :tokens(tokens) {}
-    std::vector<Token> tokens;
-};
-
-class Expression: ProdRule {
+class Expression {
     public:
     bool checkIfValid() {
         for(Token token: tokens) {
@@ -21,12 +9,16 @@ class Expression: ProdRule {
         return true;
     }
 
-    void addChild(Expression _) {}
+    Expression() {}
+    Expression(std::vector<Token> tokens) :tokens(tokens) {}
 
-    Expression(std::vector<Token> tokens) :ProdRule(tokens) {}
+    void updateTokens(std::vector<Token> tokens) { this->tokens = tokens; }
+
+    private:
+    std::vector<Token> tokens;
 };
 
-class Statement: ProdRule {
+class Statement {
     public:
     bool checkIfValid() {
         if(tokens[0].content!="return") return false;
@@ -42,16 +34,21 @@ class Statement: ProdRule {
         this->expression = child;
     } 
 
-    Statement(std::vector<Token> tokens) :ProdRule(tokens), expression(tokens) {}
+    Statement() {}
+    
+    void updateTokens(std::vector<Token> tokens) { this->tokens = tokens; }
+    
+    Expression getChild() { return expression; }
 
     private:
     Expression expression;
+    std::vector<Token> tokens;
 };
 
-class Function: ProdRule {
+class Function {
     public:
     bool checkIfValid() {
-        if(!statement.checkIfValid()) return false;
+        for(Statement statement: statements) if(!statement.checkIfValid()) return false;
 
         if(tokens[0].content!="int") return false;
 
@@ -70,22 +67,28 @@ class Function: ProdRule {
         return true;
     }
 
-    Function(std::vector<Token> tokens) :ProdRule(tokens), statement(tokens) {}
+    Function() {}
 
     void addChild(Statement statement) {
-        this->statement = statement;
+        this->statements.push_back(statement);
     }
+
+    void updateTokens(std::vector<Token> tokens) { this->tokens = tokens; }
+    
+    std::vector<Statement> getChildren() { return statements; }
 
     std::string getFuncID() { return this->id; }
 
     private:
     std::string id;
-    Statement statement;
+    std::vector<Token> tokens;
+    std::vector<Statement> statements;
 };
 
-class Program: ProdRule {
+class Program {
     public:
     bool checkIfValid() {
+        for(Function foo: functions) if(!foo.checkIfValid()) return false;
         return functions.size()>0;
     }
     
@@ -93,8 +96,13 @@ class Program: ProdRule {
         this->functions.push_back(function);
     }
 
-    Program(std::vector<Token> tokens) :ProdRule(tokens) {}
+    std::vector<Function> getChildren() { return functions; }
+
+    Program() {}
+    
+    void updateTokens(std::vector<Token> tokens) { this->tokens = tokens; }
     
     private:
     std::vector<Function> functions;
+    std::vector<Token> tokens;
 };
