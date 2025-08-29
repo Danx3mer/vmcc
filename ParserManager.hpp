@@ -9,17 +9,28 @@ class ParserManager {
     void exitScope() {
         switch(this->scope) {
             case FUNCTION: 
-            this->currentProgram.addChild(this->currentFunction);
+            {
+                this->currentFunction.updateTokens(*this->currentContent);
+                this->currentProgram.addChild(this->currentFunction);
+                std::cout << "EXIT FUNC";
+            }
             break;
-            case STATEMENT:
-            this->currentFunction.addChild(this->currentStatement);
+            case STATEMENT: 
+            {
+                this->currentStatement.updateTokens(*this->currentContent);
+                this->currentFunction.addChild(this->currentStatement);
+                std::cout << "EXIT st";
+            }
             break;
-            case EXPRESSION:
+            case EXPRESSION: 
+            {
             this->currentStatement.addChild(Expression(*this->currentContent));
+            std::cout << "EXIT exp";
+            }
             break;
         }
 
-        this->scope = ParsingScope(this->scope - -1);
+        this->scope = ParsingScope(this->scope -1);
         this->currentContent->assign({});
         this->selectAppropriateContent();
     }
@@ -42,14 +53,18 @@ class ParserManager {
         this->currentContent->push_back(token);
     }
 
-    ParserManager() :content(4) {}
+    ParserManager() :content(4), scope(PROGRAM) {}
 
     void printParsedProgram() {
         for(Function foo: this->currentProgram.getChildren()) {
-            std::cout << foo.getFuncID() << "\n";
+           std::cout << foo.getFuncID() << "\n";
             for(Statement statement: foo.getChildren())
                 std::cout << "Statement" << "\n";
         }
+
+        //std::cout << currentFunction.getFuncID();
+        //std::cout << currentStatement.checkIfValid();
+        //std::cout << currentExpression.checkIfValid();
     }
 
     private:

@@ -1,5 +1,4 @@
 #include "lex.hpp"
-#include <vector>
 #include <algorithm>
 
 std::vector<Token> findtStrings(std::vector<char> tkns) {
@@ -42,8 +41,6 @@ std::vector<char> getBaseTokens() {
 }
 
 std::vector<Token> lex() {
-    std::ios_base::sync_with_stdio(false);
-    
     const std::vector<char> tokens = getBaseTokens();
 
     std::string inFile;

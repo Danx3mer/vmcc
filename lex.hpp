@@ -3,7 +3,8 @@
 #include <iostream>
 #include <vector>
 
-const short TKSSIZE = 2;
+#define TKSSIZE 2
+
 const std::string tokenStrings[TKSSIZE] = {
     "int", "return"
 };

@@ -10,10 +10,11 @@ void parse() {
     ParserManager pMnger;
 
     for(Token token: tokens) {
+        std::cout << token.content;
         pMnger.pushToken(token);
         
 		if(token.type==KEYWORD) pMnger.enterScope();
-        
+
         switch(pMnger.getCurrentScope()) {
             case ParserManager::ParsingScope::FUNCTION: {
                 if(token.content=="{") pMnger.enterScope();   

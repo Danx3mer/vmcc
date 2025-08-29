@@ -24,6 +24,7 @@ bool Statement::checkIfValid()
 {
         if(tokens[0].content!="return") return false;
         for(Token token: tokens) {
+            if(&token == &tokens[0]) continue;
             if(token.content==";") return true;
             if(token.type!=DIGIT) return false;
         }
@@ -66,7 +67,9 @@ void Function::addChild(Statement statement)
 
 std::vector<Statement> Function::getChildren() { return this->statements; }
 
-std::string Function::getFuncID() { return this->id; }
+std::string Function::getFuncID() {
+    return (this->checkIfValid()) ? id : "INVALID";
+}
 
 bool Program::checkIfValid() 
 {

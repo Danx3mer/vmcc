@@ -4,7 +4,7 @@
 
 class ProdRule {
     public:
-    virtual bool checkIfValid() { return true; };
+    virtual bool checkIfValid() = 0;
     void updateTokens(std::vector<Token> tokens);
 
     virtual ~ProdRule() = default;
@@ -13,7 +13,7 @@ class ProdRule {
     std::vector<Token> tokens;
 };
 
-class Expression: ProdRule {
+class Expression: public ProdRule {
     public:
     Expression() {}
     ~Expression() {}
@@ -21,9 +21,10 @@ class Expression: ProdRule {
     bool checkIfValid() override;
 };
 
-class Statement: ProdRule {
+class Statement: public ProdRule {
     public:
     bool checkIfValid() override;
+    
     Statement() {}
     ~Statement() {}
     
@@ -34,7 +35,7 @@ class Statement: ProdRule {
     Expression expression;
 };
 
-class Function: ProdRule {
+class Function: public ProdRule {
     public:
     bool checkIfValid() override;
 
@@ -50,7 +51,7 @@ class Function: ProdRule {
     std::vector<Statement> statements;
 };
 
-class Program: ProdRule {
+class Program: public ProdRule {
     public:
     bool checkIfValid() override;
 
