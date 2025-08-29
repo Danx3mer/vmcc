@@ -1,4 +1,4 @@
-#include "parser.cpp"
+#include "parser.hpp"
 
 int main() {
     parse();

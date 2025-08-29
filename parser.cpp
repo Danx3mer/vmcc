@@ -1,4 +1,5 @@
-#include "lex.cpp"
+#include "lex.hpp"
+#include "parser.hpp"
 #include "ParserManager.hpp"
 
 void parse() {

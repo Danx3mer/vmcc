@@ -1,11 +1,6 @@
-#include "tokenTypes.hpp"
+#include "lex.hpp"
 #include <vector>
 #include <algorithm>
-
-const short TKSSIZE = 2;
-const std::string tokenStrings[TKSSIZE] = {
-    "int", "return"
-};
 
 std::vector<Token> findtStrings(std::vector<char> tkns) {
     std::vector<Token> vec;
@@ -46,7 +41,7 @@ std::vector<char> getBaseTokens() {
     return tokens;
 }
 
-std::vector<Token, std::allocator<Token>> lex() {
+std::vector<Token> lex() {
     std::ios_base::sync_with_stdio(false);
     
     const std::vector<char> tokens = getBaseTokens();

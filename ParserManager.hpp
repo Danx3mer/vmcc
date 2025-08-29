@@ -7,44 +7,45 @@ class ParserManager {
     };
 
     void exitScope() {
-        switch(scope) {
+        switch(this->scope) {
             case FUNCTION: 
-            currentProgram.addChild(currentFunction);
+            this->currentProgram.addChild(this->currentFunction);
             break;
             case STATEMENT:
-            currentFunction.addChild(currentStatement);
+            this->currentFunction.addChild(this->currentStatement);
             break;
             case EXPRESSION:
-            currentStatement.addChild(Expression(*currentContent));
+            this->currentStatement.addChild(Expression(*this->currentContent));
             break;
         }
 
-        scope = ParsingScope(scope - -1);
-        currentContent->assign({});
+        this->scope = ParsingScope(this->scope - -1);
+        this->currentContent->assign({});
         this->selectAppropriateContent();
     }
 
     void enterScope() {
-        scope = ParsingScope(scope + 1);
+        this->scope = ParsingScope(this->scope + 1);
         this->selectAppropriateContent();
     }
 
     ParsingScope getCurrentScope() {
-        return scope;
+        return this->scope;
     }
 
     std::vector<Token> getCurrentContent() {
-        return *currentContent;
+        return *this->currentContent;
     }
 
     void pushToken(Token token) {
-        currentContent->push_back(token);
+        this->selectAppropriateContent();
+        this->currentContent->push_back(token);
     }
 
     ParserManager() :content(4) {}
 
     void printParsedProgram() {
-        for(Function foo: currentProgram.getChildren()) {
+        for(Function foo: this->currentProgram.getChildren()) {
             std::cout << foo.getFuncID() << "\n";
             for(Statement statement: foo.getChildren())
                 std::cout << "Statement" << "\n";
@@ -65,7 +66,7 @@ class ParserManager {
     void selectAppropriateContent() {
         short op;
         
-        switch(scope) {
+        switch(this->scope) {
         case PROGRAM:
             op=0;
         break;
@@ -80,6 +81,6 @@ class ParserManager {
         break;
         }
 
-        currentContent = &this->content[op];
+        this->currentContent = &this->content[op];
     }
 };
