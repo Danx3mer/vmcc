@@ -38,6 +38,7 @@ class ParserManager {
     void enterScope() {
         this->scope = ParsingScope(this->scope + 1);
         this->selectAppropriateContent();
+        if(lastToken.type==KEYWORD) this->currentContent->push_back(lastToken);
     }
 
     ParsingScope getCurrentScope() {
@@ -49,11 +50,11 @@ class ParserManager {
     }
 
     void pushToken(Token token) {
+        this->lastToken = token;
         this->selectAppropriateContent();
-        this->currentContent->push_back(token);
     }
 
-    ParserManager() :content(4), scope(PROGRAM) {}
+    ParserManager() :content(4), scope(PROGRAM), lastToken(Token()) {}
 
     void printParsedProgram() {
         for(Function foo: this->currentProgram.getChildren()) {
@@ -77,6 +78,8 @@ class ParserManager {
     Function currentFunction;
     Statement currentStatement;
     Expression currentExpression;
+
+    Token lastToken;
 
     void selectAppropriateContent() {
         short op;

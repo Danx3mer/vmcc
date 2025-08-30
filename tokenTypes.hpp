@@ -2,6 +2,7 @@
 #include <iostream>
 
 enum TokenType {
+    START,
     DIGIT,
     CHARACTER,
     SYMBOL,
@@ -18,4 +19,8 @@ class Token {
     static TokenType getTokenType(char unLexedToken);
 
     Token(TokenType type, std::string content): type(type), content(content) {}
+
+    private:
+    friend class ParserManager;
+    Token() :type(START), content("") {}
 };
