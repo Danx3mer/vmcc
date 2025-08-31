@@ -36,14 +36,12 @@ void ParserManager::exitScope()
 
 void ParserManager::enterScope()
 {
-
     Token lastToken;
     if (!this->currentContent->empty())
         lastToken = (*this->currentContent)[this->currentContent->size() - 1];
     this->scope = ParsingScope(this->scope + 1);
     this->selectAppropriateContent();
-    std::cout << lastToken.type;
-    if (lastToken.type == KEYWORD)
+    if (lastToken.type == KEYWORD && this->scope == FUNCTION)
         this->currentContent->push_back(lastToken);
 }
 
@@ -53,9 +51,14 @@ void ParserManager::pushToken(Token token)
     this->currentContent->push_back(token);
 }
 
+void ParserManager::popLastToken()
+{
+    this->currentContent->pop_back();
+}
+
 void ParserManager::prettyPrint()
 {
-    std::cout << this->currentProgram.getChildren().size();
+    std::cout << "\nPROGRAM\nNUMBER OF FUNCTIONS: " + this->currentProgram.getChildren().size();
     for (Function foo : this->currentProgram.getChildren())
     {
         foo.prettyPrint();
@@ -64,6 +67,11 @@ void ParserManager::prettyPrint()
             statement.prettyPrint();
         }
     }
+}
+
+Program ParserManager::getProgram()
+{
+    return this->currentProgram;
 }
 
 void ParserManager::selectAppropriateContent()

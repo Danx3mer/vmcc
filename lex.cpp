@@ -50,13 +50,9 @@ std::vector<char> getBaseTokens()
     return tokens;
 }
 
-std::vector<Token> lex()
+std::vector<Token> lex(std::string inFile)
 {
     const std::vector<char> tokens = getBaseTokens();
-
-    std::string inFile;
-    std::cout << "Please input the name of the file to be turned into tokens" << "\n";
-    std::cin >> inFile;
 
     freopen(inFile.c_str(), "r", stdin);
 

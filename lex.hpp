@@ -12,4 +12,4 @@ std::vector<Token> findtStrings(std::vector<char>);
 
 std::vector<char> getBaseTokens();
 
-std::vector<Token> lex();
+std::vector<Token> lex(std::string inFile);

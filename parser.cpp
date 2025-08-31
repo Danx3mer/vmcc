@@ -2,10 +2,8 @@
 #include "parser.hpp"
 #include "ParserManager.hpp"
 
-void parse()
+Program parse(std::vector<Token> tokens)
 {
-    std::vector<Token> tokens = lex();
-
     Program prog;
 
     ParserManager pMnger(tokens);
@@ -30,21 +28,33 @@ void parse()
 
         case ParserManager::ParsingScope::STATEMENT:
         {
-            if (token.content == ";")
+            if (token.type == SEMICOLON)
                 pMnger.exitScope();
         }
         break;
 
         case ParserManager::ParsingScope::EXPRESSION:
         {
-            if (token.type != DIGIT)
+            if(token.type == KEYWORD && !pMnger.getCurrentContent().empty()) {
                 pMnger.exitScope();
+            }
+            else if(token.type == SEMICOLON) {
+                pMnger.popLastToken();
+                pMnger.exitScope();
+                pMnger.pushToken(token);
+                pMnger.exitScope();
+            }
+            else if (token.type != DIGIT && !(token.type==KEYWORD && pMnger.getCurrentContent().empty())) {
+                pMnger.exitScope();
+            }
         }
         break;
         }
     }
 
-    pMnger.exitScope();
+    std::cout << pMnger.getCurrentScope();
 
     pMnger.prettyPrint();
+
+    return pMnger.getProgram();
 }

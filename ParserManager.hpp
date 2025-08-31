@@ -15,7 +15,6 @@ public:
     ParserManager(std::vector<Token> tokens);
 
     void exitScope();
-
     void enterScope();
 
     // Current Parsing Stuff Getters
@@ -23,8 +22,11 @@ public:
     std::vector<Token> getCurrentContent() { return *this->currentContent; }
 
     void pushToken(Token token);
+    void popLastToken();
 
     void prettyPrint();
+
+    Program getProgram();
 
 private:
     ParsingScope scope;

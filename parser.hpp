@@ -1,3 +1,4 @@
 #pragma once
+#include "prodRules.hpp"
 
-void parse();
+Program parse(std::vector<Token> tokens);

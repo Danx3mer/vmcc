@@ -19,8 +19,12 @@ class Expression : public ProdRule
 public:
     Expression() {}
     ~Expression() {}
-    Expression(std::vector<Token> &tokens);
+    Expression(std::vector<Token> tokens);
     bool checkIfValid() override;
+    std::string getValue();
+
+    private:
+    std::string value;
 };
 
 class Statement : public ProdRule

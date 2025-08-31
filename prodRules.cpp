@@ -2,24 +2,31 @@
 
 void ProdRule::updateTokens(std::vector<Token> tokens)
 {
-    for (Token t : tokens)
-        std::cout << t.content;
     this->tokens = tokens;
 }
 
-Expression::Expression(std::vector<Token> &tokens)
+Expression::Expression(std::vector<Token> tokens)
 {
     this->tokens = tokens;
 }
 
 bool Expression::checkIfValid()
 {
-    for (Token token : tokens)
+    std::string nVal = "";
+    for (Token token : this->tokens)
     {
+        nVal += token.content;
         if (token.type != DIGIT)
             return false;
     }
+    this->value = nVal;
+    std::cout << "EXPRESSION VALUE: " << nVal;
     return true;
+}
+
+std::string Expression::getValue() {
+    this->checkIfValid();
+    return this->value;
 }
 
 bool Statement::checkIfValid()

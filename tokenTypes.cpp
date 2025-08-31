@@ -39,6 +39,9 @@ TokenType Token::getTokenType(char unLexedToken)
     case '/':
         return TokenType::SYMBOL;
         break;
+    case '_':
+        return TokenType::SYMBOL;
+        break;
     default:
         return TokenType::UNDEFINED;
     }
