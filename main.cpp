@@ -1,5 +1,6 @@
 #include "parser.hpp"
 
-int main() {
+int main()
+{
     parse();
 }

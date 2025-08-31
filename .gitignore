@@ -1,3 +1,7 @@
+# Testing files
 *.c
+
+# Executables/g++ compiled files
 *.exe
 *.out
+*.gch

@@ -6,8 +6,7 @@
 #define TKSSIZE 2
 
 const std::string tokenStrings[TKSSIZE] = {
-    "int", "return"
-};
+    "int", "return"};
 
 std::vector<Token> findtStrings(std::vector<char>);
 

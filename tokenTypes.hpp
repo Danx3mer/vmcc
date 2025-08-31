@@ -1,8 +1,8 @@
 #pragma once
 #include <iostream>
 
-enum TokenType {
-    START,
+enum TokenType
+{
     DIGIT,
     CHARACTER,
     SYMBOL,
@@ -11,16 +11,17 @@ enum TokenType {
     UNDEFINED
 };
 
-class Token {
-    public:
+class Token
+{
+public:
     TokenType type;
     std::string content;
 
     static TokenType getTokenType(char unLexedToken);
 
-    Token(TokenType type, std::string content): type(type), content(content) {}
+    Token(TokenType type, std::string content) : type(type), content(content) {}
 
-    private:
+private:
     friend class ParserManager;
-    Token() :type(START), content("") {}
+    Token() : type(UNDEFINED), content("") {}
 };
